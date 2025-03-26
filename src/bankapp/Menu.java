@@ -20,29 +20,41 @@ public class Menu {
 	
 	// display methods don't need to be tested
 	public void displayOptions() {
-		System.out.println("Please enter an amount to be deposited:");
+		System.out.println("Type 'd' to make a deposit or type 'w' to make a withdrawal:");
 		
 	}
 	
-	//methods that require user input (Scanner) don't need to be tested
-	public double getUserInput() {
+	//Method to acquire the transaction type (deposit or withdrawal)
+	public String getTransactionType() {
 		Scanner keyboardInput = new Scanner(System.in);
+		String type = keyboardInput.nextLine().trim().toLowerCase();
+		return type;
+	}
+	
+	//Method to acquire the amount of money involved in the transaction
+	public double getUserInputAmount() {
+		Scanner keyboardInput = new Scanner(System.in);
+		System.out.println("Enter the amount you would like to deposit/withdraw:");
 		double userInput = keyboardInput.nextDouble();
 		return userInput;
 	}
 	
-	//Can and should test methods that process user input once it is received 
-	public void processUserInput(double amount) {
-		theAccount.deposit(amount);
+	public void processUserInput(String transactionType, double amount) {
+		if (transactionType.equals("d")) {
+			theAccount.deposit(amount);
+		} 
+		else if (transactionType.equals("w")) {
+			theAccount.withdraw(amount);
+		} 
+		else {
+			System.out.println("Invalid transaction type.");
+		}
 	}
 	
 	public BankAccount getAccount() {
 		return theAccount;
 	}
-	
-	
-	
-	
+
 	
 	
 	
@@ -251,6 +263,5 @@ public class Menu {
 			return false;
 		}
 	}
-	
 	
 }
