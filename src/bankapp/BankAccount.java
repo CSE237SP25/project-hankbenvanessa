@@ -43,7 +43,7 @@ public class BankAccount {
 	
 	public void showTransactionHistory() {
 		if (transactionHistory.isEmpty()) {
-	        System.out.println("No transactions yet.");
+	        	System.out.println("No transactions yet.");
 	    }
 		else {
 		    System.out.println("Transaction History:");
