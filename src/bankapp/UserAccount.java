@@ -15,7 +15,7 @@ public class UserAccount {
 	
 	public boolean checkPassword(String passwordAttempt) {
 		
-		if (password == passwordAttempt) {
+		if (password.equals(passwordAttempt)) {
 			return true;
 		}
 		else {

@@ -6,11 +6,13 @@ import java.util.HashMap;
 
 public class Menu {
 	
+	private String currentUser;
 	private BankAccount theAccount;
 	private Map<String, UserAccount> userAccounts;
 	private Scanner in;
 	
 	public Menu() {
+		currentUser = "";
 		theAccount = new BankAccount();
 		userAccounts = new HashMap<>();
 		in = new Scanner(System.in);
@@ -85,37 +87,68 @@ public class Menu {
 	
 	public void processUserAccountMenuChoice(int intFromUser) {
 		if (intFromUser == 1) {
-			System.out.println("You chose Option 1: Create an account");
-			boolean isUsernameAvailable = false;
-			String potentialUsername = "";
-			// prompts the user for a user name until they either choose one
-			// that is available or type 'quit'
-			while (!isUsernameAvailable) {
-				potentialUsername = getUsernameFromUser();
-				if (potentialUsername == "quit") {
-					System.out.println("You entered 'quit'");
-					return;
-				}
-				isUsernameAvailable = checkIfUsernameAvailable(potentialUsername);
-				if (!isUsernameAvailable) {
-					System.out.println("Unfortunately, the username '" + potentialUsername + "' is already taken.");
-				}
-			}
-			
-			String newPassword = getNewPassword();
-			// adds an account to the userAccounts map with user's
-			// username and password
-			boolean createAccountSuccessful = createUserAccount(potentialUsername, newPassword);
-			if (createAccountSuccessful) {
-				System.out.println("Your account has been created!");
-			}
-			
+			processUserCreateAnAccount();
+		}
+		if (intFromUser == 2) {
+			processUserLogIn();
+
 		}
 	}
 	
+	public void processUserCreateAnAccount() {
+		System.out.println("--------------------------------------");
+		System.out.println("You chose Option 1: Create an account");
+		boolean isUsernameAvailable = false;
+		String potentialUsername = "";
+		// prompts the user for a user name until they either choose one that is available or type 'quit'
+		while (!isUsernameAvailable) {
+			potentialUsername = getNewUsernameFromUser();
+			if (potentialUsername == "quit") {
+				System.out.println("You entered 'quit'");
+				return;
+			}
+			isUsernameAvailable = checkIfUsernameAvailable(potentialUsername);
+			if (!isUsernameAvailable) {
+				System.out.println("Unfortunately, the username '" + potentialUsername + "' is already taken.");
+			}
+		}
+		
+		String newPassword = getNewPassword();
+		// adds an account to the userAccounts map with user's username and password
+		boolean createAccountSuccessful = createUserAccount(potentialUsername, newPassword);
+		if (createAccountSuccessful) {
+			System.out.println("Your account has been created!");
+		}
+	}
+	
+	public void processUserLogIn() {
+		System.out.println("You chose option 2: log in to an existing account.");
+		System.out.println("Please enter the username for your account or type 'quit' to quit:");
+		String username = getUserInputString();
+		if (username.equals("quit")) {
+			return;
+		}
+		// check if username is in the stored userAccounts map
+		if (!userAccounts.containsKey(username)) {
+			System.out.println("The username '" + username + "' does not have an associated account, "
+					+ "please try again");
+			int menuChoice = 2;
+			processUserAccountMenuChoice(menuChoice);
+		}
+		// username is in the stored accounts
+		else {
+			System.out.println("Please enter the password associated with your account:");
+			String password = getUserInputString();
+			boolean wasLoginSuccessful = userLogIn(username, password);
+			if (!wasLoginSuccessful) {
+				int menuChoice = 2;
+				processUserAccountMenuChoice(menuChoice);
+			}
+		}
+	}
 	
 	// Asks the user for a user name and asks them to confirm it
-	public String getUsernameFromUser() {
+	public String getNewUsernameFromUser() {
 		System.out.println("Please enter the username for your account or type 'quit' to quit:");
 		String potentialUsername = getUserInputString();
 		if (potentialUsername == "quit") {
@@ -189,5 +222,35 @@ public class Menu {
 	}
 	
 	// METHODS FOR UserAccount UI >>>
+	
+	// <<< METHODS FOR UserLogIn UI 
+	public String getCurrentUser() {
+		return this.currentUser;
+	}
+	
+	public boolean userLogIn(String username, String password) {
+		if (username == "") {
+			System.out.println("No username was entered in.");
+		}
+		//check if username is in the userAccounts map
+		if (userAccounts.containsKey(username)) {
+			UserAccount account = userAccounts.get(username);
+			if (account.checkPassword(password)) {
+				this.currentUser = username;
+				System.out.println("You are now logged in as '" + this.currentUser + "'");
+				return true;
+			}
+			else {
+				System.out.println("Password is Incorrect.");
+				return false;
+			}
+		}
+		// username is not in the userAccounts map 
+		else {
+			System.out.println("An account with this username does not exist.");
+			return false;
+		}
+	}
+	
 	
 }

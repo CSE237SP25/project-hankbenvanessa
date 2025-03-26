@@ -80,7 +80,7 @@ class UserAccountTests {
 		Menu m = new Menu();
 
 		// 2. 
-		String finalUsername = m.getUsernameFromUser();
+		String finalUsername = m.getNewUsernameFromUser();
 		
 		//3.
 		assertEquals(true, finalUsername.equals(usernameForAccount));
@@ -113,7 +113,7 @@ class UserAccountTests {
 		Menu m = new Menu();
 
 		// 2. 
-		String finalUsername = m.getUsernameFromUser();
+		String finalUsername = m.getNewUsernameFromUser();
 		
 		//3.
 		assertEquals(true, finalUsername.equals(secondUsernameForAccount));
@@ -381,7 +381,178 @@ class UserAccountTests {
 		
 		assertEquals(1, difference);
 	}
-
+	
+	
+	@Test 
+	void userLogInTest1() {
+		//1. Set up variables
+		
+				// User Account Inputs
+				//   - Account Display Options
+				String accountDisplayAnswer = "1";
+				//   - Process User Account Menu Choice
+				//      - Enter Username For Account
+				String usernameForAccount = "user1";
+				//			- Is this Correct?
+				String isThisCorrectResponse = "yes";
+				//	 	- Get New Password
+				String newPassword = "pass1";
+				// 			- Verify Password
+				String passwordVerification = "pass1";
+				//	 	- Get New Password
+				String accountDisplayAnswer2 = "2";
+				// 			- Verify Password
+				String logInUsername = usernameForAccount;
+				String logInPassword = newPassword;
+				
+				
+				String simulatedInput = accountDisplayAnswer + System.lineSeparator()
+										+ usernameForAccount + System.lineSeparator()
+										+ isThisCorrectResponse + System.lineSeparator()
+										+ newPassword + System.lineSeparator()
+										+ passwordVerification + System.lineSeparator()
+										+ accountDisplayAnswer2 + System.lineSeparator()
+										+ logInUsername + System.lineSeparator()
+										+ logInPassword + System.lineSeparator();
+				
+				ByteArrayInputStream byteSimulatedInput = 
+						new ByteArrayInputStream(simulatedInput.getBytes());
+				
+				System.setIn(byteSimulatedInput);
+				// It is crucial to create the menu after we do System.setIn()
+				Menu m = new Menu();
+				
+				// 2. 
+				m.accountDisplayOptions();
+				int menuResponse = m.getUserInputInt();
+				
+				m.processUserAccountMenuChoice(menuResponse);
+				m.accountDisplayOptions();
+				menuResponse = m.getUserInputInt();
+				
+				m.processUserAccountMenuChoice(menuResponse);
+				
+				//3. 
+				String currentUser = m.getCurrentUser();
+				System.out.println("--End userLogInTest--");
+				
+				assertEquals(true, currentUser.equals(logInUsername));
+	}
+	
+	@Test 
+	void userLogInTest2() {
+		//1. Set up variables
+		
+				// User Account Inputs
+				//   - Account Display Options
+				String accountDisplayAnswer = "1";
+				//   - Process User Account Menu Choice
+				//      - Enter Username For Account
+				String usernameForAccount = "user1";
+				//			- Is this Correct?
+				String isThisCorrectResponse = "yes";
+				//	 	- Get New Password
+				String newPassword = "pass1";
+				// 			- Verify Password
+				String passwordVerification = "pass1";
+				//	 	- Get New Password
+				String accountDisplayAnswer2 = "2";
+				// 			- Verify Password
+				String logInUsername = usernameForAccount;
+				String logInPassword = "pass2";
+				String quit = "quit";
+				
+				
+				
+				String simulatedInput = accountDisplayAnswer + System.lineSeparator()
+										+ usernameForAccount + System.lineSeparator()
+										+ isThisCorrectResponse + System.lineSeparator()
+										+ newPassword + System.lineSeparator()
+										+ passwordVerification + System.lineSeparator()
+										+ accountDisplayAnswer2 + System.lineSeparator()
+										+ logInUsername + System.lineSeparator()
+										+ logInPassword + System.lineSeparator()
+										+ quit;
+				
+				ByteArrayInputStream byteSimulatedInput = 
+						new ByteArrayInputStream(simulatedInput.getBytes());
+				
+				System.setIn(byteSimulatedInput);
+				// It is crucial to create the menu after we do System.setIn()
+				Menu m = new Menu();
+				
+				// 2. 
+				m.accountDisplayOptions();
+				int menuResponse = m.getUserInputInt();
+				
+				m.processUserAccountMenuChoice(menuResponse);
+				m.accountDisplayOptions();
+				menuResponse = m.getUserInputInt();
+				
+				m.processUserAccountMenuChoice(menuResponse);
+				
+				//3. 
+				String currentUser = m.getCurrentUser();
+				System.out.println("--End userLogInTest2--");
+				
+				assertEquals(false, currentUser.equals(logInUsername));
+	}
+	
+	@Test 
+	void userLogInTest3() {
+		//1. Set up variables
+		
+				// User Account Inputs
+				//   - Account Display Options
+				String accountDisplayAnswer = "1";
+				//   - Process User Account Menu Choice
+				//      - Enter Username For Account
+				String usernameForAccount = "user1";
+				//			- Is this Correct?
+				String isThisCorrectResponse = "yes";
+				//	 	- Get New Password
+				String newPassword = "pass1";
+				// 			- Verify Password
+				String passwordVerification = "pass1";
+				//	 	- Get New Password
+				String accountDisplayAnswer2 = "2";
+				// 			- Verify Password
+				String logInUsername = "user2";
+				String logInPassword = "quit";
+				
+				
+				String simulatedInput = accountDisplayAnswer + System.lineSeparator()
+										+ usernameForAccount + System.lineSeparator()
+										+ isThisCorrectResponse + System.lineSeparator()
+										+ newPassword + System.lineSeparator()
+										+ passwordVerification + System.lineSeparator()
+										+ accountDisplayAnswer2 + System.lineSeparator()
+										+ logInUsername + System.lineSeparator()
+										+ logInPassword + System.lineSeparator();
+				
+				ByteArrayInputStream byteSimulatedInput = 
+						new ByteArrayInputStream(simulatedInput.getBytes());
+				
+				System.setIn(byteSimulatedInput);
+				// It is crucial to create the menu after we do System.setIn()
+				Menu m = new Menu();
+				
+				// 2. 
+				m.accountDisplayOptions();
+				int menuResponse = m.getUserInputInt();
+				
+				m.processUserAccountMenuChoice(menuResponse);
+				m.accountDisplayOptions();
+				menuResponse = m.getUserInputInt();
+				
+				m.processUserAccountMenuChoice(menuResponse);
+				
+				//3. 
+				String currentUser = m.getCurrentUser();
+				System.out.println("--End userLogInTest3--");
+				
+				assertEquals(false, currentUser.equals(logInUsername));
+	}
 
 
 }
