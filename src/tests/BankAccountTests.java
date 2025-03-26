@@ -40,19 +40,19 @@ public class BankAccountTests {
 	@Test
 	public void testShowTransactionHistory() {
 		//Googled this to learn how to capture console output
-        PrintStream originalOut = System.out;
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
-
-        BankAccount account = new BankAccount();
-        account.deposit(25);
-        account.showTransactionHistory();
+		PrintStream originalOut = System.out;
+	        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+	        System.setOut(new PrintStream(outputStream));
+	
+	        BankAccount account = new BankAccount();
+	        account.deposit(25);
+	        account.showTransactionHistory();
 
 		//Googled this to learn how to capture console output
-        System.setOut(originalOut);
-        String printedOutput = outputStream.toString().trim();
-
-        String expected = "Transaction History:\n1. Deposited: $25.0. Account Balance is: $25.0";
-        assertEquals(expected, printedOutput);
+	        System.setOut(originalOut);
+	        String printedOutput = outputStream.toString().trim();
+	
+	        String expected = "Transaction History:\n1. Deposited: $25.0. Account Balance is: $25.0";
+	        assertEquals(expected, printedOutput);
     }
 }
