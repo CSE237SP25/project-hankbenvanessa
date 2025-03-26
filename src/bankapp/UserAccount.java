@@ -36,14 +36,13 @@ public class UserAccount {
 	
 	
 	public boolean accountWithdrawal(double amount) {
-//		try {
-//			myAccount.withdrawal(amount);
-//		}
-//		catch (IllegalArgumentException e) {
-//			return false;
-//		}
-//		return true;
-		return false;
+		try {
+			myAccount.withdraw(amount);
+		}
+		catch (IllegalArgumentException e) {
+			return false;
+		}
+		return true;
 	}
 	
 	
@@ -52,7 +51,7 @@ public class UserAccount {
 	}
 	
 	public void showTransactionHistory() {
-		this.myAccounnt.showTransactionHistory();
+		this.myAccount.showTransactionHistory();
 	}
 	
 	
