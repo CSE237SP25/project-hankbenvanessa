@@ -38,6 +38,13 @@ public class Menu {
 		return theAccount;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
 	// <<< METHODS FOR UserAccount UI 
 	public void accountDisplayOptions() {
 		System.out.println("Enter '1' to begin creating an account: ");
@@ -86,15 +93,19 @@ public class Menu {
 			while (!isUsernameAvailable) {
 				potentialUsername = getUsernameFromUser();
 				if (potentialUsername == "quit") {
+					System.out.println("You entered 'quit'");
 					return;
 				}
 				isUsernameAvailable = checkIfUsernameAvailable(potentialUsername);
+				if (!isUsernameAvailable) {
+					System.out.println("Unfortunately, the username '" + potentialUsername + "' is already taken.");
+				}
 			}
 			
 			String newPassword = getNewPassword();
 			// adds an account to the userAccounts map with user's
 			// username and password
-			boolean createAccountSuccessful = createAUserAccount(potentialUsername, newPassword);
+			boolean createAccountSuccessful = createUserAccount(potentialUsername, newPassword);
 			if (createAccountSuccessful) {
 				System.out.println("Your account has been created!");
 			}
@@ -130,6 +141,7 @@ public class Menu {
 				}
 			}
 		}
+		System.out.println("You confirmed username '" + potentialUsername + "'");
 		return potentialUsername;
 	}
 	
@@ -152,13 +164,16 @@ public class Menu {
 			}
 			else {
 				doPasswordsMatch = true;
+				newPassword = secondPasswordEntry;
 			}
 		}
+		System.out.println("Password Selected!");
 		return newPassword;
 	}
+
 	// returns true if account creation is successful
 	// returns false if there is already an account with that username
-	public boolean createAUserAccount(String username, String password) {
+	public boolean createUserAccount(String username, String password) {
 		if (checkIfUsernameAvailable(username)) {
 			UserAccount newAccount = new UserAccount(username, password);
 			userAccounts.put(username, newAccount);
