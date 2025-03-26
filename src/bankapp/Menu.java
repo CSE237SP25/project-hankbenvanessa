@@ -49,7 +49,12 @@ public class Menu {
 	
 	// <<< METHODS FOR UserAccount UI 
 	public void accountDisplayOptions() {
+		System.out.println("-----------------------------------------------");
 		System.out.println("Enter '1' to begin creating an account: ");
+		System.out.println("Enter '2' to log in to an existing account: ");
+		System.out.println("Enter '3' to make a deposit: ");
+		System.out.println("Enter '4' to make a withdrawal: ");
+		System.out.println("Enter '5' to see your account balance: ");
 	}
 	
 	// Does not need to be tested
@@ -63,6 +68,12 @@ public class Menu {
 		//Scanner in = new Scanner(System.in);
 		String stringFromUser = in.next();
 		return stringFromUser;
+	}
+	
+	//Does not need to be tested
+	public double getUserInputDouble() {
+		double doubleFromUser = in.nextDouble();
+		return doubleFromUser;
 	}
 	
 	// returns true for a Yes and false for a No from the user
@@ -91,7 +102,15 @@ public class Menu {
 		}
 		if (intFromUser == 2) {
 			processUserLogIn();
-
+		}
+		if (intFromUser == 3) {
+			processUserDeposit();
+		}
+		if (intFromUser == 4) {
+			processUserWithdrawal();
+		}
+		if (intFromUser == 5) {
+			processUserGetBalance();
 		}
 	}
 	
@@ -144,6 +163,58 @@ public class Menu {
 				int menuChoice = 2;
 				processUserAccountMenuChoice(menuChoice);
 			}
+		}
+	}
+	
+	public void processUserDeposit() {
+		System.out.println("You chose option 3: make a deposit");
+		if (!userAccounts.containsKey(currentUser)) {
+			System.out.println("Please log in to an account before making a deposit");
+		}
+		else {
+			System.out.println("Please enter the amount you would like to deposit: ");
+			double depositAmount = getUserInputDouble();
+			UserAccount account = userAccounts.get(currentUser);
+			boolean wasDepositSuccessful = account.accountDeposit(depositAmount);
+			if (wasDepositSuccessful) {
+				System.out.println("Deposit Successful!");
+			}
+			else {
+				System.out.println("There was a problem with your deposit, please try again later.");
+			}
+		}
+		
+	}
+	
+	public void processUserWithdrawal() {
+		System.out.println("You chose option 4: make a withdrawal.");
+		if (!userAccounts.containsKey(currentUser)) {
+			System.out.println("Please log in to an account before making a withdrawal");
+		}
+		else {
+			System.out.println("Please enter the amount you would like to withdraw: ");
+			double withdrawAmount = getUserInputDouble();
+			UserAccount account = userAccounts.get(currentUser);
+			boolean wasWithdrawSuccessful = account.accountWithdrawal(withdrawAmount);
+			if (wasWithdrawSuccessful) {
+				System.out.println("Withdrawal Successful!");
+			}
+			else {
+				System.out.println("There was a problem with your withdrawal, please try again later.");
+			}
+		}
+		
+	}
+	
+	public void processUserGetBalance() {
+		System.out.println("You chose option 5: see account balance.");
+		if (!userAccounts.containsKey(currentUser)) {
+			System.out.println("Please log in to an account before checking your balance!");
+		}
+		else {
+			UserAccount account = userAccounts.get(currentUser);
+			double balance = account.getAccountBalance();
+			System.out.println("Your balance is currently $" + balance + " dollars.");
 		}
 	}
 	
@@ -223,7 +294,7 @@ public class Menu {
 	
 	// METHODS FOR UserAccount UI >>>
 	
-	// <<< METHODS FOR UserLogIn UI 
+	// <<< METHODS FOR UserLogIn UI
 	public String getCurrentUser() {
 		return this.currentUser;
 	}

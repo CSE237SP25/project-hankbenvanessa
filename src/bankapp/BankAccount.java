@@ -18,4 +18,8 @@ public class BankAccount {
 	public double getCurrentBalance() {
 		return this.balance;
 	}
+	
+	public void showTransactionHistory() {
+		
+	}
 }

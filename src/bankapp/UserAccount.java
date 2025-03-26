@@ -35,5 +35,26 @@ public class UserAccount {
 	}
 	
 	
+	public boolean accountWithdrawal(double amount) {
+//		try {
+//			myAccount.withdrawal(amount);
+//		}
+//		catch (IllegalArgumentException e) {
+//			return false;
+//		}
+//		return true;
+		return false;
+	}
+	
+	
+	public double getAccountBalance() {
+		return this.myAccount.getCurrentBalance();
+	}
+	
+	public void showTransactionHistory() {
+		this.myAccounnt.showTransactionHistory();
+	}
+	
+	
 	
 }
