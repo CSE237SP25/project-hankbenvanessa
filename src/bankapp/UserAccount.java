@@ -1,9 +1,10 @@
 package bankapp;
 
 public class UserAccount {
-	String username;
-	String password;
-	BankAccount myAccount;
+	
+	private String username;
+	private String password;
+	private BankAccount myAccount;
 
 
 	public UserAccount(String username, String password) {
@@ -26,11 +27,11 @@ public class UserAccount {
 	public boolean accountDeposit(double amount) {
 		try {
 			myAccount.deposit(amount);
-			return true;
 		}
 		catch (IllegalArgumentException e) {
 			return false;
 		}
+		return true;
 	}
 	
 	
