@@ -11,14 +11,22 @@ public class MenuTests {
 	
 	@Test
 	public void testUserDeposit() {
-		//1. Create object being tested
 		Menu m = new Menu();
+
+		m.processUserInput("d", 25.0);
 		
-		//2. Call method being tested
-		m.processUserInput(25);
-		
-		//3. Use assertions to verify correctness
 		BankAccount account = m.getAccount();
 		assertEquals(account.getCurrentBalance(), 25.0, 0.005);
+	}
+	
+	@Test
+	public void testUserWithdrawal() {
+		Menu m = new Menu();
+
+		m.processUserInput("d", 25.0);
+		m.processUserInput("w", 10.0);
+		
+		BankAccount account = m.getAccount();
+		assertEquals(account.getCurrentBalance(), 15.0, 0.005);
 	}
 }
