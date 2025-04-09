@@ -8,11 +8,13 @@ public class Menu {
 	
 	private String currentUser;
 	private BankAccount theAccount;
+	private AccountSettings settings;
 	private Map<String, UserAccount> userAccounts;
 	private Scanner in;
 	
 	public Menu() {
 		currentUser = "";
+		settings = new AccountSettings();
 		theAccount = new BankAccount();
 		userAccounts = new HashMap<>();
 		in = new Scanner(System.in);
@@ -55,10 +57,6 @@ public class Menu {
 		return theAccount;
 	}
 
-	
-	
-	
-	
 	// <<< METHODS FOR UserAccount UI 
 	public void accountDisplayOptions() {
 		System.out.println("-----------------------------------------------");
@@ -67,6 +65,7 @@ public class Menu {
 		System.out.println("Enter '3' to make a deposit: ");
 		System.out.println("Enter '4' to make a withdrawal: ");
 		System.out.println("Enter '5' to see your account balance: ");
+		System.out.println("Enter '7' to see your account settings: "); // change for account settings
 	}
 	
 	// Does not need to be tested
@@ -126,6 +125,9 @@ public class Menu {
 		}
 		if (intFromUser == 6) {
 			// show transaction history yet to be implemented
+		}
+		if (intFromUser == 7) {
+			settings.showSettingsMenu();
 		}
 	}
 	
@@ -230,6 +232,7 @@ public class Menu {
 			UserAccount account = userAccounts.get(currentUser);
 			double balance = account.getAccountBalance();
 			System.out.println("Your balance is currently $" + balance + " dollars.");
+			theAccount.sendAlert(balance);
 		}
 	}
 	
