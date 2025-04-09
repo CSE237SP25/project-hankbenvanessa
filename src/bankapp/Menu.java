@@ -186,7 +186,7 @@ public class Menu {
 		}
 		else {
 			UserAccount account = userAccounts.get(currentUser);
-			account.showTransactionHistory();		
+			account.showTransactionHistory(currentBankAccountID);		
 		}
 	}
 	
