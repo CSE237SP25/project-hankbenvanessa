@@ -67,6 +67,7 @@ public class Menu {
 		System.out.println("Enter '3' to make a deposit: ");
 		System.out.println("Enter '4' to make a withdrawal: ");
 		System.out.println("Enter '5' to see your account balance: ");
+		System.out.println("Enter '6' to see your transaction history: ");
 	}
 	
 	// Does not need to be tested
@@ -125,8 +126,20 @@ public class Menu {
 			processUserGetBalance();
 		}
 		if (intFromUser == 6) {
-			// show transaction history yet to be implemented
+			processUserGetTransactionHistory();
 		}
+	}
+	
+	public void processUserGetTransactionHistory() {
+		System.out.println("You chose option 6: view transaction history");
+		if (!userAccounts.containsKey(currentUser)) {
+			System.out.println("Please log in to an account to view your transaction history");
+		}
+		else {
+			UserAccount account = userAccounts.get(currentUser);
+			account.showTransactionHistory();		
+		}
+		
 	}
 	
 	public void processUserCreateAnAccount() {
