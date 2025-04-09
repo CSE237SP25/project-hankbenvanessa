@@ -7,22 +7,19 @@ Team Members:
 * Vanessa Zepeda
 
 What user stories were completed this iteration?
-- Deposit
-- Withdrawal
 - Transaction history
-- Account creation
-- Account log in
+- Banking tips
+- Multiple banking accounts
+- Switching between accounts
 
 What user stories do you intend to complete next iteration?
-- Multiple bank accounts
-- Switching bank account
-- Hypothetical matching Bank transactions
-- Delete/edit account
+- Hypothetical matching Bank transactions (Bank 'balance' changes with our transactions)
+- Delete/edit account details
+- 
 
 Is there anything that you implemented but doesn't currently work?
-- Everything should work through running Main.java
-- The transaction history test only works on Mac
-- You can't log out currently
+- Everything should work through running 'runBankApp.sh' on the command line
+- The transaction history test only works on Mac computers
 
 What commands are needed to compile and run your code from the command line (please provide a script that users can run to launch your program)?
-- You just need to compile and run Main.java
+- Just run this inside of the command line: 'bash runBankApp.sh'
