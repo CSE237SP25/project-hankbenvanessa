@@ -9,14 +9,12 @@ public class Menu {
 	private String currentUser;
 	private int currentBankAccountID;
 	private BankAccount theAccount;
-	private AccountSettings settings;
 	private Map<String, UserAccount> userAccounts;
 	private Scanner in;
 	
 	public Menu() {
 		currentUser = "";
 		currentBankAccountID = 1;
-    settings = new AccountSettings();
 		theAccount = new BankAccount();
 		userAccounts = new HashMap<>();
 		in = new Scanner(System.in);
@@ -91,7 +89,6 @@ public class Menu {
     System.out.println("Enter '6' to see your transaction history: ");
 		System.out.println("Enter '7' to change Bank Accounts: ");
 		System.out.println("Enter '8' to create a new Bank Account: ");
-    System.out.println("Enter '9' to see your account settings: ");
 	}
 	
 	
@@ -110,7 +107,9 @@ public class Menu {
 				catch (Exception e) {
 				}
 			}
-			processUserAccountMenuChoice(menuResponse);	
+			processUserAccountMenuChoice(menuResponse);
+			
+			
 		}
 	}
 	
@@ -178,9 +177,6 @@ public class Menu {
 		if (intFromUser == 8) {
 			processUserCreateNewBankAccount();
 		}
-    if (intFromUser == 9) {
-      settings.showSettingsMenu();
-    }
 	}
 	
 	public void processUserGetTransactionHistory() {
@@ -191,9 +187,6 @@ public class Menu {
 		else {
 			UserAccount account = userAccounts.get(currentUser);
 			account.showTransactionHistory(currentBankAccountID);		
-		}
-		if (intFromUser == 7) {
-			settings.showSettingsMenu();
 		}
 	}
 	
@@ -298,7 +291,6 @@ public class Menu {
 			UserAccount account = userAccounts.get(currentUser);
 			double balance = account.getAccountBalance(currentBankAccountID);
 			System.out.println("Your balance is currently $" + balance + " dollars.");
-			theAccount.sendAlert(balance);
 		}
 	}
 	
