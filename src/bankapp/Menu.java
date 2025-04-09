@@ -53,9 +53,7 @@ public class Menu {
 	
 	public BankAccount getAccount() {
 		return theAccount;
-	}
-
-	
+	}	
 	
 	public String getRandomBankingTip() {
 	    String[] tips = {
