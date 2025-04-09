@@ -171,7 +171,7 @@ public class Menu {
 		if (intFromUser == 6) {
 			processUserGetTransactionHistory();
 		}
-    if (intFromUser == 7) {
+		if (intFromUser == 7) {
 			processUserChangeBankAccount();
 		}
 		if (intFromUser == 8) {
