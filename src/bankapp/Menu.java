@@ -57,10 +57,28 @@ public class Menu {
 
 	
 	
-	
-	
+	public String getRandomBankingTip() {
+	    String[] tips = {
+	        "Set a monthly budget and stick to it.",
+	        "Track your spending to avoid surprises.",
+	        "Avoid ATM fees by using your bank’s network.",
+	        "Save at least 10% of every paycheck.",
+	        "Use strong passwords for your online accounts.",
+	        "Review your statements regularly for fraud.",
+	        "Build an emergency fund with 3-6 months of expenses.",
+	        "Pay your credit card balance in full each month.",
+	        "Set up automatic bill payments to avoid late fees.",
+	        "Check your credit report once a year for free."
+	    };
+
+	    int randomIndex = (int)(Math.random() * tips.length);
+	    return tips[randomIndex];
+	}
+
 	// <<< METHODS FOR UserAccount UI 
 	public void accountDisplayOptions() {
+		String bankingTip = getRandomBankingTip();
+		System.out.println("Tip of the day: " + bankingTip);
 		System.out.println("-----------------------------------------------");
 		System.out.println("Enter '1' to begin creating an account: ");
 		System.out.println("Enter '2' to log in to an existing account: ");
