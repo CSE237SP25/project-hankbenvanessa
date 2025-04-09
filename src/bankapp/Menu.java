@@ -56,20 +56,37 @@ public class Menu {
 	
 	public BankAccount getAccount() {
 		return theAccount;
+	}	
+	
+	public String getRandomBankingTip() {
+	    String[] tips = {
+	        "Set a monthly budget and stick to it.",
+	        "Track your spending to avoid surprises.",
+	        "Avoid ATM fees by using your bank’s network.",
+	        "Save at least 10% of every paycheck.",
+	        "Use strong passwords for your online accounts.",
+	        "Review your statements regularly for fraud.",
+	        "Build an emergency fund with 3-6 months of expenses.",
+	        "Pay your credit card balance in full each month.",
+	        "Set up automatic bill payments to avoid late fees.",
+	        "Check your credit report once a year for free."
+	    };
+
+	    int randomIndex = (int)(Math.random() * tips.length);
+	    return tips[randomIndex];
 	}
 
-	
-	
-	
-	
 	// <<< METHODS FOR UserAccount UI 
 	public void accountDisplayOptions() {
+		String bankingTip = getRandomBankingTip();
+		System.out.println("Tip of the day: " + bankingTip);
 		System.out.println("-----------------------------------------------");
 		System.out.println("Enter '1' to begin creating an account: ");
 		System.out.println("Enter '2' to log in to an existing account: ");
 		System.out.println("Enter '3' to make a deposit: ");
 		System.out.println("Enter '4' to make a withdrawal: ");
 		System.out.println("Enter '5' to see your account balance: ");
+    System.out.println("Enter '6' to see your transaction history: ");
 		System.out.println("Enter '7' to change Bank Accounts: ");
 		System.out.println("Enter '8' to create a new Bank Account: ");
 	}
@@ -152,13 +169,24 @@ public class Menu {
 			processUserGetBalance();
 		}
 		if (intFromUser == 6) {
-			// show transaction history yet to be implemented
+			processUserGetTransactionHistory();
 		}
-		if (intFromUser == 7) {
+    if (intFromUser == 7) {
 			processUserChangeBankAccount();
 		}
 		if (intFromUser == 8) {
 			processUserCreateNewBankAccount();
+		}
+	}
+	
+	public void processUserGetTransactionHistory() {
+		System.out.println("You chose option 6: view transaction history");
+		if (!userAccounts.containsKey(currentUser)) {
+			System.out.println("Please log in to an account to view your transaction history");
+		}
+		else {
+			UserAccount account = userAccounts.get(currentUser);
+			account.showTransactionHistory();		
 		}
 	}
 	
