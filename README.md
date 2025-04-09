@@ -11,6 +11,7 @@ What user stories were completed this iteration?
 - Banking tips
 - Multiple banking accounts
 - Switching between accounts
+- Banking alerts
 
 What user stories do you intend to complete next iteration?
 - Hypothetical matching Bank transactions (Bank 'balance' changes with our transactions)
