@@ -9,6 +9,7 @@ import java.io.PrintStream;
 import org.junit.jupiter.api.Test;
 
 import bankapp.BankAccount;
+import bankapp.AccountSettings;
 
 public class BankAccountTests {
 
@@ -55,4 +56,29 @@ public class BankAccountTests {
 	        String expected = "Transaction History:\n1. Deposited: $25.0. Account Balance is: $25.0";
 	        assertEquals(expected, printedOutput);
     }
+	
+	
+	@Test
+	public void testSendAlertWhenBalanceBelowDefaultThreshold() {
+		BankAccount account = new BankAccount();
+		double currentBalance = 40;
+		String expected = "ALERT: Your balance is below the threshold of $50.0";
+		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        account.sendAlert(currentBalance);
+        String actual = outContent.toString().trim();
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	public void testNoSendAlertWhenBalanceAboveThreshold() {
+		BankAccount account = new BankAccount();
+		double currentBalance = 60;
+		String expected = "";
+		ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outContent));
+        account.sendAlert(currentBalance);
+        String actual = outContent.toString().trim();
+		assertEquals(expected, actual);
+	}
 }
