@@ -7,11 +7,19 @@ public class BankAccount {
 	private double balance;
 	private Stack<String> transactionHistory;
 	private int transactionCounter;
+	private AccountSettings settings;
 	
 	public BankAccount() {
 		this.balance = 0;
+		settings = new AccountSettings();
 		this.transactionHistory = new Stack<>();
 		this.transactionCounter = 1;
+	}
+	
+	public void sendAlert(double currentBalance) {
+		if (currentBalance < settings.getThreshold()) {
+			System.out.println("ALERT: Your balance is below the threshold of $" + settings.getThreshold());
+		}
 	}
 	
 	public void deposit(double amount) {
