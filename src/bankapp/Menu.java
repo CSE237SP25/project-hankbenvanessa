@@ -6,10 +6,9 @@ import java.util.HashMap;
 
 public class Menu extends BankService {
 	
-
-	
 	public Menu() {
 		super();
+		
 	}
 
 	// <<< METHODS FOR UserAccount UI 
@@ -46,7 +45,8 @@ public class Menu extends BankService {
 		System.out.println("Enter '6' to see your transaction history: ");
 		System.out.println("Enter '7' to change Bank Accounts: ");
 		System.out.println("Enter '8' to create a new Bank Account: ");
-		System.out.println("Enter '9' to make a Wire Transfer: ");
+		System.out.println("Enter '9' to see your account settings: ");
+		System.out.println("Enter '10' to make a Wire Transfer: ");
 	}
 	
 	
@@ -77,6 +77,9 @@ public class Menu extends BankService {
 			processUserCreateNewBankAccount();
 		}
 		if (intFromUser == 9) {
+			settings.showSettingsMenu();
+		}
+		if (intFromUser == 10) {
 			processUserTransfer();
 		}
 	}
@@ -151,6 +154,7 @@ public class Menu extends BankService {
 			UserAccount account = userAccounts.get(currentUser);
 			double balance = account.getAccountBalance(currentBankAccountID);
 			System.out.println("Your balance is currently $" + balance + " dollars.");
+			theAccount.sendAlert(balance);
 		}
 	}
 	

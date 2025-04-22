@@ -12,6 +12,7 @@ public abstract class BankService {
 	protected BankAccount theAccount;
 	protected Map<String, UserAccount> userAccounts;
 	protected Scanner in;
+	protected AccountSettings settings;
 	
 	public BankService() {
 		currentUser = "";
@@ -19,6 +20,7 @@ public abstract class BankService {
 		theAccount = new BankAccount();
 		userAccounts = new HashMap<>();
 		in = new Scanner(System.in);
+		settings = new AccountSettings();
 	}
 	
 	// Does not need to be tested
