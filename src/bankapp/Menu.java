@@ -4,93 +4,15 @@ import java.util.Scanner;
 import java.util.Map;
 import java.util.HashMap;
 
-public class Menu {
+public class Menu extends BankService {
 	
-	private String currentUser;
-	private int currentBankAccountID;
-	private BankAccount theAccount;
-	private Map<String, UserAccount> userAccounts;
-	private Scanner in;
+
 	
 	public Menu() {
-		currentUser = "";
-		currentBankAccountID = 1;
-		theAccount = new BankAccount();
-		userAccounts = new HashMap<>();
-		in = new Scanner(System.in);
-	}
-	
-	
-	// display methods don't need to be tested
-	public void displayOptions() {
-		System.out.println("Type 'd' to make a deposit or type 'w' to make a withdrawal:");
-		
-	}
-	
-	//Method to acquire the transaction type (deposit or withdrawal)
-	public String getTransactionType() {
-		Scanner keyboardInput = new Scanner(System.in);
-		String type = keyboardInput.nextLine().trim().toLowerCase();
-		return type;
-	}
-	
-	//Method to acquire the amount of money involved in the transaction
-	public double getUserInputAmount() {
-		Scanner keyboardInput = new Scanner(System.in);
-		System.out.println("Enter the amount you would like to deposit/withdraw:");
-		double userInput = keyboardInput.nextDouble();
-		return userInput;
-	}
-	
-	public void processUserInput(String transactionType, double amount) {
-		if (transactionType.equals("d")) {
-			theAccount.deposit(amount);
-		} 
-		else if (transactionType.equals("w")) {
-			theAccount.withdraw(amount);
-		} 
-		else {
-			System.out.println("Invalid transaction type.");
-		}
-	}
-	
-	public BankAccount getAccount() {
-		return theAccount;
-	}	
-	
-	public String getRandomBankingTip() {
-	    String[] tips = {
-	        "Set a monthly budget and stick to it.",
-	        "Track your spending to avoid surprises.",
-	        "Avoid ATM fees by using your bank’s network.",
-	        "Save at least 10% of every paycheck.",
-	        "Use strong passwords for your online accounts.",
-	        "Review your statements regularly for fraud.",
-	        "Build an emergency fund with 3-6 months of expenses.",
-	        "Pay your credit card balance in full each month.",
-	        "Set up automatic bill payments to avoid late fees.",
-	        "Check your credit report once a year for free."
-	    };
-
-	    int randomIndex = (int)(Math.random() * tips.length);
-	    return tips[randomIndex];
+		super();
 	}
 
 	// <<< METHODS FOR UserAccount UI 
-	public void accountDisplayOptions() {
-		String bankingTip = getRandomBankingTip();
-		System.out.println("Tip of the day: " + bankingTip);
-		System.out.println("-----------------------------------------------");
-		System.out.println("Enter '1' to begin creating an account: ");
-		System.out.println("Enter '2' to log in to an existing account: ");
-		System.out.println("Enter '3' to make a deposit: ");
-		System.out.println("Enter '4' to make a withdrawal: ");
-		System.out.println("Enter '5' to see your account balance: ");
-    System.out.println("Enter '6' to see your transaction history: ");
-		System.out.println("Enter '7' to change Bank Accounts: ");
-		System.out.println("Enter '8' to create a new Bank Account: ");
-	}
-	
 	
 	public void runBankAccount() {
 		
@@ -109,48 +31,25 @@ public class Menu {
 			}
 			processUserAccountMenuChoice(menuResponse);
 			
-			
 		}
 	}
 	
-	// Does not need to be tested
-	public int getUserInputInt() {
-		//Scanner in = new Scanner(System.in);
-		int intFromUser = in.nextInt();
-		return intFromUser;
-	}
-	// Does not need to be tested
-	public String getUserInputString() {
-		//Scanner in = new Scanner(System.in);
-		String stringFromUser = in.next();
-		return stringFromUser;
-	}
-	
-	//Does not need to be tested
-	public double getUserInputDouble() {
-		double doubleFromUser = in.nextDouble();
-		return doubleFromUser;
+	public void accountDisplayOptions() {
+		String bankingTip = getRandomBankingTip();
+		System.out.println("Tip of the day: " + bankingTip);
+		System.out.println("-----------------------------------------------");
+		System.out.println("Enter '1' to begin creating an account: ");
+		System.out.println("Enter '2' to log in to an existing account: ");
+		System.out.println("Enter '3' to make a deposit: ");
+		System.out.println("Enter '4' to make a withdrawal: ");
+		System.out.println("Enter '5' to see your account balance: ");
+		System.out.println("Enter '6' to see your transaction history: ");
+		System.out.println("Enter '7' to change Bank Accounts: ");
+		System.out.println("Enter '8' to create a new Bank Account: ");
+		System.out.println("Enter '9' to make a Wire Transfer: ");
 	}
 	
-	// returns true for a Yes and false for a No from the user
-	public boolean getUserYesOrNo() {
-		System.out.println("Please enter 'yes' for yes and 'no' for no");
-		String stringFromUser = getUserInputString();
-		boolean isYesOrNo = false;
-		while (!isYesOrNo) {
-			if (stringFromUser.equals("Yes") || stringFromUser.equals("yes")) {
-				return true;
-			}
-			else if (stringFromUser.equals("No") || stringFromUser.equals("no")) {
-				return false;
-			}
-			else {
-				System.out.println("Input is incorrect. Please enter 'yes' for yes or 'no' for no:");
-				stringFromUser = getUserInputString();
-			}
-		}
-		return false;
-	}
+	
 	
 	public void processUserAccountMenuChoice(int intFromUser) {
 		if (intFromUser == 1) {
@@ -171,74 +70,49 @@ public class Menu {
 		if (intFromUser == 6) {
 			processUserGetTransactionHistory();
 		}
-    if (intFromUser == 7) {
+		if (intFromUser == 7) {
 			processUserChangeBankAccount();
 		}
 		if (intFromUser == 8) {
 			processUserCreateNewBankAccount();
 		}
-	}
-	
-	public void processUserGetTransactionHistory() {
-		System.out.println("You chose option 6: view transaction history");
-		if (!userAccounts.containsKey(currentUser)) {
-			System.out.println("Please log in to an account to view your transaction history");
-		}
-		else {
-			UserAccount account = userAccounts.get(currentUser);
-			account.showTransactionHistory(currentBankAccountID);		
+		if (intFromUser == 9) {
+			processUserTransfer();
 		}
 	}
 	
 	public void processUserCreateAnAccount() {
 		System.out.println("--------------------------------------");
 		System.out.println("You chose Option 1: Create an account");
-		boolean isUsernameAvailable = false;
-		String potentialUsername = "";
 		// prompts the user for a user name until they either choose one that is available or type 'quit'
-		while (!isUsernameAvailable) {
-			potentialUsername = getNewUsernameFromUser();
-			if (potentialUsername == "quit") {
-				System.out.println("You entered 'quit'");
-				return;
-			}
-			isUsernameAvailable = checkIfUsernameAvailable(potentialUsername);
-			if (!isUsernameAvailable) {
-				System.out.println("Unfortunately, the username '" + potentialUsername + "' is already taken.");
-			}
+		String newUsername = getNewUsernameFromUser();
+		if (newUsername == "quit") {
+			System.out.println("You entered 'quit'");
+			return;
 		}
-		
 		String newPassword = getNewPassword();
 		// adds an account to the userAccounts map with user's username and password
-		boolean createAccountSuccessful = createUserAccount(potentialUsername, newPassword);
+		boolean createAccountSuccessful = createUserAccount(newUsername, newPassword);
 		if (createAccountSuccessful) {
 			System.out.println("Your account has been created!");
+		}
+		else {
+			System.out.println("Sorry, there was an error while creating your account. Please try again!");
 		}
 	}
 	
 	public void processUserLogIn() {
 		System.out.println("You chose option 2: log in to an existing account.");
-		System.out.println("Please enter the username for your account or type 'quit' to quit:");
-		String username = getUserInputString();
+		String username = getValidUsername();
 		if (username.equals("quit")) {
 			return;
 		}
-		// check if username is in the stored userAccounts map
-		if (!userAccounts.containsKey(username)) {
-			System.out.println("The username '" + username + "' does not have an associated account, "
-					+ "please try again");
-			int menuChoice = 2;
-			processUserAccountMenuChoice(menuChoice);
-		}
 		// username is in the stored accounts
-		else {
-			System.out.println("Please enter the password associated with your account:");
-			String password = getUserInputString();
-			boolean wasLoginSuccessful = userLogIn(username, password);
-			if (!wasLoginSuccessful) {
-				int menuChoice = 2;
-				processUserAccountMenuChoice(menuChoice);
-			}
+		System.out.println("Please enter the password associated with your account:");
+		String password = getUserInputString();
+		boolean wasLoginSuccessful = userLogIn(username, password);
+		if (!wasLoginSuccessful) {
+			System.out.println("Password Invalid. Please try again.");
 		}
 	}
 	
@@ -250,14 +124,7 @@ public class Menu {
 		else {
 			System.out.println("Please enter the amount you would like to deposit: ");
 			double depositAmount = getUserInputDouble();
-			UserAccount account = userAccounts.get(currentUser);
-			boolean wasDepositSuccessful = account.accountDeposit(depositAmount, currentBankAccountID);
-			if (wasDepositSuccessful) {
-				System.out.println("Deposit Successful!");
-			}
-			else {
-				System.out.println("There was a problem with your deposit, please try again later.");
-			}
+			makeDeposit(depositAmount);
 		}
 		
 	}
@@ -270,16 +137,9 @@ public class Menu {
 		else {
 			System.out.println("Please enter the amount you would like to withdraw: ");
 			double withdrawAmount = getUserInputDouble();
-			UserAccount account = userAccounts.get(currentUser);
-			boolean wasWithdrawSuccessful = account.accountWithdrawal(withdrawAmount, currentBankAccountID);
-			if (wasWithdrawSuccessful) {
-				System.out.println("Withdrawal Successful!");
-			}
-			else {
-				System.out.println("There was a problem with your withdrawal, please try again later.");
-			}
+			makeWithdrawal(withdrawAmount);
+			
 		}
-		
 	}
 	
 	public void processUserGetBalance() {
@@ -291,6 +151,17 @@ public class Menu {
 			UserAccount account = userAccounts.get(currentUser);
 			double balance = account.getAccountBalance(currentBankAccountID);
 			System.out.println("Your balance is currently $" + balance + " dollars.");
+		}
+	}
+	
+	public void processUserGetTransactionHistory() {
+		System.out.println("You chose option 6: view transaction history");
+		if (!userAccounts.containsKey(currentUser)) {
+			System.out.println("Please log in to an account to view your transaction history");
+		}
+		else {
+			UserAccount account = userAccounts.get(currentUser);
+			account.showTransactionHistory(currentBankAccountID);		
 		}
 	}
 	
@@ -308,15 +179,8 @@ public class Menu {
 			}
 			System.out.println("Please enter the ID for an account");
 			int bankAccountID = getUserInputInt();
-			if (bankAccountID < 1 || bankAccountID > maxBankAccountID) {
-				System.out.println("Sorry, you did not enter in an apropriate integer");
-				
-			}
-			else {
-				this.currentBankAccountID = bankAccountID;
-			}
+			changeBankAccount(bankAccountID);
 		}
-		
 	}
 	
 	public void processUserCreateNewBankAccount() {
@@ -331,109 +195,40 @@ public class Menu {
 		}
 	}
 	
-	// Asks the user for a user name and asks them to confirm it
-	public String getNewUsernameFromUser() {
-		System.out.println("Please enter the username for your account or type 'quit' to quit:");
-		String potentialUsername = getUserInputString();
-		if (potentialUsername == "quit") {
-			return "quit";
+	public void processUserTransfer() {
+		if (!userAccounts.containsKey(currentUser)) {
+			System.out.println("Please log in to an account before creating a new bank account");
 		}
-		
-		
-		// 	Asks for the user to verify their username.
-		// 	If they type 'no', reprompts them until they enter a choice
-		// and verify it or until they type 'quit'
-		boolean isUsernameCorrect = false;
-		while (!isUsernameCorrect) {
-			System.out.println("You entered: '" + potentialUsername + "', is this correct?");
-			boolean yesOrNoResponse = getUserYesOrNo();
-			if (yesOrNoResponse) {
-				isUsernameCorrect = true;
+		else {
+			System.out.println("You chose option 9: Wire Transfer");
+			String transferAccountUsername = getValidUsername();
+			if (transferAccountUsername.equals("quit")) {
+				return;
 			}
-			else {
-				System.out.println("Please enter the username for your account or type 'quit' to quit:");
-				potentialUsername = getUserInputString();
-				if (potentialUsername == "quit") {
-					return "quit";
-				}
-			}
+			double transferAmount = getTransferAmount();
+			wireTransfer(transferAccountUsername, transferAmount);
 		}
-		System.out.println("You confirmed username '" + potentialUsername + "'");
-		return potentialUsername;
 	}
 	
-	public boolean checkIfUsernameAvailable(String username) {
-		return !userAccounts.containsKey(username);
-	}
-	
-	public String getNewPassword() {
-		String newPassword = "";
-		
-		// Prompts for two passwords until they match
-		boolean doPasswordsMatch = false;
-		while(!doPasswordsMatch) {
-			System.out.println("Please enter the new password for your account");
-			String firstPasswordEntry = getUserInputString();
-			System.out.println("Please enter the new password for again");
-			String secondPasswordEntry = getUserInputString();
-			if (!firstPasswordEntry.equals(secondPasswordEntry)) {
-				System.out.println("Your passwords do not match. Please try again.");
+	public boolean wireTransfer(String transferAccountUsername, double transferAmount) {
+		if (userAccounts.containsKey(transferAccountUsername)) {
+			if (transferAmount < 0 || transferAmount > getCurrentBalance()) {
+				System.out.println("Sorry, the transfer could not be completed because\n "
+						+ "you entered an invalid transfer amount");
+				return false;
 			}
-			else {
-				doPasswordsMatch = true;
-				newPassword = secondPasswordEntry;
-			}
-		}
-		System.out.println("Password Selected!");
-		return newPassword;
-	}
-
-	// returns true if account creation is successful
-	// returns false if there is already an account with that username
-	public boolean createUserAccount(String username, String password) {
-		if (checkIfUsernameAvailable(username)) {
-			UserAccount newAccount = new UserAccount(username, password);
-			userAccounts.put(username, newAccount);
+			makeWithdrawal(transferAmount);
+			UserAccount transferAccount = userAccounts.get(transferAccountUsername);
+			// Bank Account Wire Transfers always go to the person's Bank Account 1 
+			transferAccount.accountDeposit(transferAmount, 1);
+			System.out.println("Wire Transfer of " + transferAmount + " to " + transferAccountUsername + " was successful!");
 			return true;
 		}
 		else {
+			System.out.println("Sorry, but the account you entered no longer exists");
 			return false;
 		}
-	}
-	
-	public int getNumberOfAccounts() {
-		return userAccounts.size();
-	}
-	
-	// METHODS FOR UserAccount UI >>>
-	
-	// <<< METHODS FOR UserLogIn UI
-	public String getCurrentUser() {
-		return this.currentUser;
-	}
-	
-	public boolean userLogIn(String username, String password) {
-		if (username == "") {
-			System.out.println("No username was entered in.");
-		}
-		//check if username is in the userAccounts map
-		if (userAccounts.containsKey(username)) {
-			UserAccount account = userAccounts.get(username);
-			if (account.checkPassword(password)) {
-				this.currentUser = username;
-				System.out.println("You are now logged in as '" + this.currentUser + "'");
-				return true;
-			}
-			else {
-				System.out.println("Password is Incorrect.");
-				return false;
-			}
-		}
-		// username is not in the userAccounts map 
-		else {
-			System.out.println("An account with this username does not exist.");
-			return false;
-		}
+		
 	}
 	
 }
