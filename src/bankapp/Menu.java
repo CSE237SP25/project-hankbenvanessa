@@ -8,7 +8,6 @@ public class Menu extends BankService {
 	
 	public Menu() {
 		super();
-		
 	}
 
 	// <<< METHODS FOR UserAccount UI 
@@ -204,7 +203,7 @@ public class Menu extends BankService {
 			System.out.println("Please log in to an account before creating a new bank account");
 		}
 		else {
-			System.out.println("You chose option 9: Wire Transfer");
+			System.out.println("You chose option 10: Wire Transfer");
 			String transferAccountUsername = getValidUsername();
 			if (transferAccountUsername.equals("quit")) {
 				return;
