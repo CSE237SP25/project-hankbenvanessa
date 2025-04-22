@@ -64,6 +64,9 @@ public class UserAccount {
 		else {
 			BankAccount account = myAccounts.get(bankAccountNum-1);
 			try {
+				if (amount > account.getCurrentBalance()) {
+					return false;
+				}
 				account.withdraw(amount);
 			}
 			catch (IllegalArgumentException e) {
