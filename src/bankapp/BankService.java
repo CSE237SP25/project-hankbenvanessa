@@ -252,13 +252,18 @@ public abstract class BankService {
 			}
 		}
 		
-		public double getTransferAmount() {
+		
+		public double getTransferAmount(int bankAccountIDFrom) {
+			if (bankAccountIDFrom <= 0 || bankAccountIDFrom > userAccounts.get(currentUser).getMaxBankAccountID()) {
+				System.out.println("Withdrawal Bank Account ID is invalid. Transfer amount set to 0");
+				return 0;
+			}
 			boolean isAmountValid = false;
 			double transferAmount = 0;
 			while(!isAmountValid) {
 				System.out.println("Please enter the amount you would like to transfer: ");
 				transferAmount = getUserInputDouble();
-				if (transferAmount >= 0 && transferAmount <= getCurrentBalance()) {
+				if (transferAmount >= 0 && transferAmount <= getCurrentBalanceWithBankID(bankAccountIDFrom)) {
 					isAmountValid = true;
 				}
 				else {
@@ -266,6 +271,19 @@ public abstract class BankService {
 				}
 			}
 			return transferAmount;
+		}
+		
+		public double getCurrentBalanceWithBankID(int bankAccountID) {
+			if (bankAccountID <= 0 || bankAccountID > userAccounts.get(currentUser).getMaxBankAccountID()) {
+				// -1 means there is no Bank Account associated with the given id
+				return -1;
+			}
+			if (userAccounts.containsKey(currentUser)) {
+				return userAccounts.get(currentUser).getAccountBalance(bankAccountID);
+			}
+			else {
+				return theAccount.getCurrentBalance();
+			}
 		}
 	
 	

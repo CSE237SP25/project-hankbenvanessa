@@ -46,6 +46,7 @@ public class Menu extends BankService {
 		System.out.println("Enter '8' to create a new Bank Account: ");
 		System.out.println("Enter '9' to see your account settings: ");
 		System.out.println("Enter '10' to make a Wire Transfer: ");
+		System.out.println("Enter '11' to make a Transfer between your accounts: ");
 	}
 	
 	
@@ -79,6 +80,9 @@ public class Menu extends BankService {
 			settings.showSettingsMenu();
 		}
 		if (intFromUser == 10) {
+			processUserWireTransfer();
+		}
+		if (intFromUser == 11) {
 			processUserTransfer();
 		}
 	}
@@ -198,7 +202,7 @@ public class Menu extends BankService {
 		}
 	}
 	
-	public void processUserTransfer() {
+	public void processUserWireTransfer() {
 		if (!userAccounts.containsKey(currentUser)) {
 			System.out.println("Please log in to an account before creating a new bank account");
 		}
@@ -208,7 +212,7 @@ public class Menu extends BankService {
 			if (transferAccountUsername.equals("quit")) {
 				return;
 			}
-			double transferAmount = getTransferAmount();
+			double transferAmount = getTransferAmount(currentBankAccountID);
 			wireTransfer(transferAccountUsername, transferAmount);
 		}
 	}
@@ -232,6 +236,76 @@ public class Menu extends BankService {
 			return false;
 		}
 		
+	}
+	
+	public void processUserTransfer() {
+		if (!userAccounts.containsKey(currentUser)) {
+			System.out.println("Please log in to an account before creating a new bank account");
+		}
+		else {
+			System.out.println("You chose option 11: Wire Transfer");
+
+			UserAccount account = userAccounts.get(currentUser);
+			int maxBankAccountID = account.getMaxBankAccountID();
+			System.out.println("Your options are:");
+			for (int i = 1; i <= maxBankAccountID; i ++) {
+				System.out.println("Bank Account " + i);
+			}
+			System.out.println("--Withdrawal Account--");
+			int bankAccountIDFrom = getValidBankAccountID();
+			if (bankAccountIDFrom == 0) {
+				System.out.println("You entered 0 to quit the transfer.");
+				return;
+			}
+			System.out.println("--Deposit Account--");
+			int bankAccountIDTo = getValidBankAccountID();
+			if (bankAccountIDTo == 0) {
+				System.out.println("You entered 0 to quit the transfer.");
+				return;
+			}
+			double transferAmount = getTransferAmount(bankAccountIDFrom);
+			bankAccountTransfer(transferAmount, bankAccountIDFrom, bankAccountIDTo);
+		}
+	}
+	
+	public int getValidBankAccountID() {
+		UserAccount account = userAccounts.get(currentUser);
+		boolean isIDValid = false;
+		while (!isIDValid) {
+			System.out.println("Please enter of ID a bank account");
+			int bankAccountID = getUserInputInt();
+			if (bankAccountID > 0 && bankAccountID <= account.getMaxBankAccountID()) {
+				return bankAccountID;
+			}
+			else if (bankAccountID == 0){
+				return 0;
+			}
+			else {
+				System.out.println("Bank Account " + bankAccountID + " does not exist.\n Please try again or type 0 to exit.");
+			}
+		}
+		return 1;
+	}
+	
+	public boolean bankAccountTransfer(double transferAmount, int bankAccountIDFrom, int bankAccountIDTo) {
+		UserAccount account = userAccounts.get(currentUser);
+		
+		if (account.accountWithdrawal(transferAmount, bankAccountIDFrom)) {
+			if (account.accountDeposit(transferAmount, bankAccountIDTo)) {
+				System.out.println("Transfer from Bank Account '" + bankAccountIDFrom + "' to 'Bank Account " + bankAccountIDTo +"' was successful!");
+				return true;
+			}
+			else {
+				System.out.println("There was an error in transferring to 'Bank Account " + bankAccountIDTo + "'");
+				account.accountDeposit(transferAmount, bankAccountIDFrom);
+			}
+		}
+		else {
+			System.out.println("There was an error in getting money from Bank Account '" + bankAccountIDFrom + "'");
+			
+		}
+		
+		return false;
 	}
 	
 }
