@@ -1,6 +1,8 @@
 package bankapp;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -10,6 +12,7 @@ public abstract class BankService {
 	protected String currentUser;
 	protected int currentBankAccountID;
 	protected BankAccount theAccount;
+	protected List<String> feedbackLog;
 	protected Map<String, UserAccount> userAccounts;
 	protected Scanner in;
 	protected AccountSettings settings;
@@ -23,6 +26,7 @@ public abstract class BankService {
 		currentBankAccountID = 1;
 		theAccount = new BankAccount();
 		userAccounts = new HashMap<>();
+		feedbackLog = new ArrayList<>();
 		in = new Scanner(System.in);
 		settings = new AccountSettings();
 	}
@@ -73,6 +77,15 @@ public abstract class BankService {
 	
 	public String getCurrentUser() {
 		return this.currentUser;
+	}
+	
+	public void collectUserFeedback() {
+		System.out.println("We'd love to hear your feedback! Please enter your feedback below:");
+		in.nextLine();
+		String feedback = in.nextLine();
+		String entry = "User: " + (currentUser.isEmpty() ? "Anonymous" : currentUser) + " | Feedback: " + feedback;
+		feedbackLog.add(entry);
+		System.out.println("Thank you for your feedback!");
 	}
 	
 	public String getRandomBankingTip() {
@@ -338,6 +351,4 @@ public abstract class BankService {
 			}
 			return transferAmount;
 		}
-	
-	
 }
