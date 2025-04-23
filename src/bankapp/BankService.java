@@ -154,8 +154,7 @@ public abstract class BankService {
 		}
 		UserAccount account = userAccounts.get(currentUser);
 		boolean wasDepositSuccessful = account.accountDeposit(depositAmount, currentBankAccountID);
-		if (wasDepositSuccessful || theAccount.isCardBlocked()) {
-//			return;
+		if (wasDepositSuccessful) {
 			System.out.println("Deposit Successful!");
 		}
 		else {
