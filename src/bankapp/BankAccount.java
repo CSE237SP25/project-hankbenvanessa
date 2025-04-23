@@ -9,6 +9,7 @@ public class BankAccount {
 	private int transactionCounter;
 	public AccountSettings settings;
 	protected double dailyWithdrawnAmount;
+	private boolean isCardReportedLostOrStolen = false;
 	
 	public BankAccount() {
 		this.balance = 0;
@@ -23,7 +24,20 @@ public class BankAccount {
 		}
 	}
 	
+	public void reportCardLostOrStolen() {
+		isCardReportedLostOrStolen = true;
+		System.out.println("Your card has been reported lost/stolen. All transactions are now blocked");
+	}
+	
+	public boolean isCardBlocked() {
+		return isCardReportedLostOrStolen;
+	}
+	
 	public void deposit(double amount) {
+		if (isCardBlocked()) {
+			System.out.println("Transaction blocked: Card has been reported lost/stolen");
+			return;
+		}
 		if(amount < 0) {
 			throw new IllegalArgumentException();
 		}
@@ -33,22 +47,27 @@ public class BankAccount {
 	}
 	
 	public void withdraw(double amount) {
-		if (amount < 0) {
-			throw new IllegalArgumentException();
+		if (isCardBlocked()) {
+			System.out.println("Transaction blocked: Card has been reported lost/stolen");
+			return;
 		}
-		if (amount > this.balance) {
-			System.out.println("You do not have enough money in your account to withdraw " + amount + " dollars.");
-		}
-		if (amount + dailyWithdrawnAmount > settings.getSpendingLimit()) {
-			System.out.println("This withdrawal would put you over your daily spending limit of " + settings.getSpendingLimit() + "$");
-		}
-		else {
-			this.balance -= amount;
-			dailyWithdrawnAmount += amount;
-			transactionHistory.push(transactionCounter + ". Withdrew: $" + amount + ". Account Balance is: $" + this.balance);
-			transactionCounter++;
-			System.out.println("Withdrawal Successful!");
-		}
+			if (amount < 0) {
+				throw new IllegalArgumentException();
+			}
+			if (amount > this.balance) {
+				System.out.println("You do not have enough money in your account to withdraw " + amount + " dollars.");
+			}
+			if (amount + dailyWithdrawnAmount > settings.getSpendingLimit()) {
+				System.out.println("This withdrawal would put you over your daily spending limit of " + settings.getSpendingLimit() + "$");
+			}
+			else {
+				this.balance -= amount;
+				dailyWithdrawnAmount += amount;
+				transactionHistory.push(transactionCounter + ". Withdrew: $" + amount + ". Account Balance is: $" + this.balance);
+				transactionCounter++;
+				System.out.println("Withdrawal Successful!");
+			}
+		
 	}
 	
 	public double getCurrentBalance() {
