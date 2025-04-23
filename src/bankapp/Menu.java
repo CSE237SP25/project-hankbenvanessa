@@ -252,8 +252,9 @@ public class Menu extends BankService {
 	}
 	
 	public void processAppFeedback() {
-		System.out.println("You chose option 11: Give feedback");
+		System.out.println("You chose option 11: Give app feedback");
 		collectUserFeedback();
 	}
+	
 	
 }
