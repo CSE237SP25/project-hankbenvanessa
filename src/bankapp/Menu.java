@@ -46,9 +46,20 @@ public class Menu extends BankService {
 		System.out.println("Enter '8' to create a new Bank Account: ");
 		System.out.println("Enter '9' to see your account settings: ");
 		System.out.println("Enter '10' to make a Wire Transfer: ");
+		System.out.println("Enter '14' to freeze all transactions: ");
+		
+		if (userAccounts.containsKey(currentUser)) {
+			try {
+				UserAccount account = userAccounts.get(currentUser);
+				BankAccount currentAccount = account.getBankAccount(currentBankAccountID);
+				if (currentAccount != null && currentAccount.areTransactionsFrozen()) {
+					System.out.println("Enter '15' to unfreeze all transactions: ");
+				}
+			} catch (Exception e) {
+				
+			}
+		} 	
 	}
-	
-	
 	
 	public void processUserAccountMenuChoice(int intFromUser) {
 		if (intFromUser == 1) {
@@ -81,6 +92,13 @@ public class Menu extends BankService {
 		if (intFromUser == 10) {
 			processUserTransfer();
 		}
+		if (intFromUser == 14) {
+			processAccountFreeze();
+		}
+		if (intFromUser == 15) {
+			processAccountUnfreeze();
+		}
+
 	}
 	
 	public void processUserCreateAnAccount() {
@@ -244,6 +262,25 @@ public class Menu extends BankService {
 			return false;
 		}
 		
+	}
+	
+	public void processAccountFreeze() {
+		if (!userAccounts.containsKey(currentUser)) {
+			System.out.println("Please log in to an account before freezing your account");
+		} else {
+			UserAccount account = userAccounts.get(currentUser);
+			account.getBankAccount(currentBankAccountID).freezeTransactions();
+		}
+	}
+	
+	
+	public void processAccountUnfreeze() {
+		if (!userAccounts.containsKey(currentUser)) {
+			System.out.println("Please log in to an account before unfreezing your account");
+		} else {
+			UserAccount account = userAccounts.get(currentUser);
+			account.getBankAccount(currentBankAccountID).unfreezeTransactions();
+		}
 	}
 	
 }

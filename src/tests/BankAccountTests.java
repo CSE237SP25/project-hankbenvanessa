@@ -91,4 +91,22 @@ public class BankAccountTests {
 		account.withdraw(5);
 		assertEquals(account.getCurrentBalance(), 80.0, 0.005);
 	}
+	
+	
+	@Test
+	public void testFrozenAccountPreventsDeposit() {
+		BankAccount account = new BankAccount();
+		account.freezeTransactions();
+		account.deposit(50);
+		assertEquals(0.0, account.getCurrentBalance(), 0.005);
+	}
+	
+	@Test
+	public void testFrozenAccountPreventsWithdraw() {
+		BankAccount account = new BankAccount();
+		account.deposit(100);
+		account.unfreezeTransactions();
+		account.withdraw(50);
+		assertEquals(100.0, account.getCurrentBalance(), 0.005);
+	}
 }

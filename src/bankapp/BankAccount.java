@@ -9,6 +9,7 @@ public class BankAccount {
 	private int transactionCounter;
 	public AccountSettings settings;
 	protected double dailyWithdrawnAmount;
+	private boolean transactionsFrozen = false;
 	
 	public BankAccount() {
 		this.balance = 0;
@@ -22,8 +23,25 @@ public class BankAccount {
 			System.out.println("ALERT: Your balance is below the threshold of $" + settings.getThreshold());
 		}
 	}
+	public void freezeTransactions() {
+		transactionsFrozen = true;
+		System.out.println("All transactions have been frozen");
+	}
+	
+	public void unfreezeTransactions() {
+		transactionsFrozen = false;
+		System.out.println("Transactions have been unfrozen");
+	}
+	
+	public boolean areTransactionsFrozen() {
+		return transactionsFrozen;
+	}
 	
 	public void deposit(double amount) {
+		if (areTransactionsFrozen()) {
+			System.out.println("Transaction denied: your account transactions are currently frozen");
+			return;
+		}
 		if(amount < 0) {
 			throw new IllegalArgumentException();
 		}
@@ -33,6 +51,10 @@ public class BankAccount {
 	}
 	
 	public void withdraw(double amount) {
+		if (areTransactionsFrozen()) {
+			System.out.println("Transaction denied: your account transactions are currently frozen");
+			return;
+		}
 		if (amount < 0) {
 			throw new IllegalArgumentException();
 		}
