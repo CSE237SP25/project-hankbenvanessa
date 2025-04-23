@@ -13,6 +13,10 @@ public abstract class BankService {
 	protected Map<String, UserAccount> userAccounts;
 	protected Scanner in;
 	protected AccountSettings settings;
+	protected String securityQuestion;
+	protected String securityQuestionAnswer;
+	protected String password;
+	protected int loginAttempts = 0;
 	
 	public BankService() {
 		currentUser = "";
@@ -21,6 +25,18 @@ public abstract class BankService {
 		userAccounts = new HashMap<>();
 		in = new Scanner(System.in);
 		settings = new AccountSettings();
+	}
+	
+	public String getSecurityQuestionAnswer() {
+		return this.securityQuestionAnswer;
+	}
+	
+	public String getSecurityQuestion() {
+		return this.securityQuestion;
+	}
+	
+	public String getPassword() {
+		return this.password;
 	}
 	
 	// Does not need to be tested
@@ -77,6 +93,20 @@ public abstract class BankService {
 	    return tips[randomIndex];
 	}
 	
+	public String getRandomSecurityQuestion() {
+	    String[] questions = {
+	        "What was the name of your first pet",
+	        "What is your mother's maiden name",
+	        "In what city were you born",
+	        "What was your childhood nickname",
+	        "What is the name of the street you grew up on",
+	    };
+
+	    int randomIndex = (int)(Math.random() * questions.length);
+	    this.securityQuestion  = questions[randomIndex];
+	    return this.securityQuestion;
+	}
+
 	// returns true for a Yes and false for a No from the user
 	public boolean getUserYesOrNo() {
 		System.out.println("Please enter 'yes' for yes and 'no' for no");
@@ -212,7 +242,48 @@ public abstract class BankService {
 				}
 			}
 			System.out.println("Password Selected!");
+			this.password = newPassword;
 			return newPassword;
+		}
+		
+		public String getNewSecurityAnswer() {
+			String newAnswer = "";
+			
+			// Prompts for two passwords until they match
+			boolean doAnswersMatch = false;
+			while(!doAnswersMatch) {
+//				System.out.println("Please enter the new password for your account");
+				String firstAnswerEntry = getUserInputString();
+				System.out.println("Please enter the answer again");
+				String secondAnswerEntry = getUserInputString();
+				if (!firstAnswerEntry.equals(secondAnswerEntry)) {
+					System.out.println("Your answers do not match. Please try again.");
+				}
+				else {
+					doAnswersMatch = true;
+					newAnswer = secondAnswerEntry;
+				}
+			}
+			System.out.println("Answer Selected!");
+			this.securityQuestionAnswer = newAnswer;
+			return newAnswer;
+		}
+		
+		public void startPasswordRecovery() {
+//			System.out.println("Answer this security question to recover your password: " + this.securityQuestion + "?");
+//			String userAnswer = getUserInputString();
+			boolean doAnswersMatch = false;
+			System.out.println("Answer this security question to recover your password: " + this.securityQuestion + "?");
+			while (!doAnswersMatch) {
+				String userAnswer = getUserInputString();
+				if (userAnswer.equals(this.securityQuestionAnswer)) {
+					doAnswersMatch = true;
+					System.out.println("Correct. Your password is " + this.password);
+				}
+				else {
+					System.out.println("Incorrect. Try again.");
+				}
+			}
 		}
 		
 		// returns true if account creation is successful

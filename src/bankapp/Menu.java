@@ -97,6 +97,8 @@ public class Menu extends BankService {
 		boolean createAccountSuccessful = createUserAccount(newUsername, newPassword);
 		if (createAccountSuccessful) {
 			System.out.println("Your account has been created!");
+			System.out.println("Please pick an answer to this security question: " + getRandomSecurityQuestion() + "?");
+			getNewSecurityAnswer();
 		}
 		else {
 			System.out.println("Sorry, there was an error while creating your account. Please try again!");
@@ -110,12 +112,22 @@ public class Menu extends BankService {
 			return;
 		}
 		// username is in the stored accounts
-		System.out.println("Please enter the password associated with your account:");
-		String password = getUserInputString();
-		boolean wasLoginSuccessful = userLogIn(username, password);
-		if (!wasLoginSuccessful) {
-			System.out.println("Password Invalid. Please try again.");
+//		System.out.println("Please enter the password associated with your account:");
+//		String password = getUserInputString();
+//		boolean wasLoginSuccessful = userLogIn(username, password);
+		while (loginAttempts < 3) {
+			System.out.println("Please enter the password associated with your account:");
+			String password = getUserInputString();
+			boolean wasLoginSuccessful = userLogIn(username, password);
+			if (!wasLoginSuccessful) {
+				loginAttempts++;
+			}
+			else {
+				return;
+			}
 		}
+		loginAttempts = 0;
+		startPasswordRecovery();
 	}
 	
 	public void processUserDeposit() {
