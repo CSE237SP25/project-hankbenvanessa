@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import bankapp.BankAccount;
+import bankapp.BankService;
 import bankapp.Menu;
 
 public class MenuTests {
@@ -73,6 +74,7 @@ public class MenuTests {
 		assertEquals(0, currentBalanceUser2, 0.001);
 	}
 	
+
 	@Test
 	public void testProcessUserLogout() {
 		Menu m = new Menu();
