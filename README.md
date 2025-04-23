@@ -7,16 +7,15 @@ Team Members:
 * Vanessa Zepeda
 
 What user stories were completed this iteration?
-- Transaction history
-- Banking tips
-- Multiple banking accounts
-- Switching between accounts
-- Overdraft fee bank alerts
+- Report card as stolen or lost
+- Freeze/unfreeze transactions
+- Set spending limits
+- Security questions for password recovery
+- User can log out
+- Transferring money between bank accounts
 
 What user stories do you intend to complete next iteration?
-- Hypothetical matching Bank transactions (Bank 'balance' changes with our transactions)
-- Delete/edit account details
-- Spending categories like food, bills, etc.
+- This is the last iteration
 
 Is there anything that you implemented but doesn't currently work?
 - Everything should work through running 'runBankApp.sh' on the command line
