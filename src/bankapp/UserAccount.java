@@ -39,6 +39,13 @@ public class UserAccount {
 		return myAccounts.size();
 	}
 	
+	public BankAccount getBankAccount(int bankAccountNum) {
+		if (bankAccountNum < 1 || bankAccountNum > myAccounts.size()) {
+			return null;
+		}
+		return myAccounts.get(bankAccountNum-1);
+	}
+	
 	public boolean accountDeposit(double amount, int bankAccountNum) {
 		if (bankAccountNum < 1 || bankAccountNum > myAccounts.size()) {
 			return false;

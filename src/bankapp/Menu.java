@@ -46,6 +46,7 @@ public class Menu extends BankService {
 		System.out.println("Enter '8' to create a new Bank Account: ");
 		System.out.println("Enter '9' to see your account settings: ");
 		System.out.println("Enter '10' to make a Wire Transfer: ");
+		System.out.println("Enter '13' to report your card as lost/stolen: ");
 	}
 	
 	
@@ -80,6 +81,9 @@ public class Menu extends BankService {
 		}
 		if (intFromUser == 10) {
 			processUserTransfer();
+		}
+		if (intFromUser == 13) {
+			processAccountLock();
 		}
 	}
 	
@@ -130,7 +134,7 @@ public class Menu extends BankService {
 		startPasswordRecovery();
 	}
 	
-	public void processUserDeposit() {
+	public void processUserDeposit() {		
 		System.out.println("You chose option 3: make a deposit");
 		if (!userAccounts.containsKey(currentUser)) {
 			System.out.println("Please log in to an account before making a deposit");
@@ -139,8 +143,7 @@ public class Menu extends BankService {
 			System.out.println("Please enter the amount you would like to deposit: ");
 			double depositAmount = getUserInputDouble();
 			makeDeposit(depositAmount);
-		}
-		
+		}		
 	}
 	
 	public void processUserWithdrawal() {
@@ -242,6 +245,16 @@ public class Menu extends BankService {
 		else {
 			System.out.println("Sorry, but the account you entered no longer exists");
 			return false;
+		}
+		
+	}
+	
+	public void processAccountLock() {
+		if (!userAccounts.containsKey(currentUser)) {
+			System.out.println("Please log in to an account before reporting stolen/lost card");
+		} else {
+			UserAccount account = userAccounts.get(currentUser);
+			account.getBankAccount(currentBankAccountID).reportCardLostOrStolen();
 		}
 		
 	}
