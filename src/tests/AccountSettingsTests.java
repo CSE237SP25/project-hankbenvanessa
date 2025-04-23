@@ -32,4 +32,18 @@ public class AccountSettingsTests {
 		settings.setThreshold(-100);
 		assertEquals(100, settings.getThreshold());
 	}
+	
+	@Test
+	public void testSpendingLimitAcceptsPositive() {
+		double expected = 100.0;
+		settings.setSpendingLimit(expected);
+		assertEquals(expected, settings.getSpendingLimit());
+	}
+	
+	@Test
+	public void testSpendingLimitRejectsNegative() {
+		settings.setSpendingLimit(100);
+		settings.setSpendingLimit(-100);
+		assertEquals(100, settings.getSpendingLimit());
+	}
 }

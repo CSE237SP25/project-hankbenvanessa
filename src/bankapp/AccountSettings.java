@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class AccountSettings {
 
 	private static double threshold = 50;
+	private static double spendingLimit = 999999999;
 
 	
 	// UI
@@ -14,6 +15,7 @@ public class AccountSettings {
 		do {
 			System.out.println("---Account Settings---");
 			System.out.println("1. View and Change Overdraft Alert Threshold");
+			System.out.println("2. View and Change Daily Spending Limit");
 			System.out.println("0. Return to Main Menu");
 			System.out.print("Choose an option:");
 			
@@ -21,6 +23,8 @@ public class AccountSettings {
 			
 			if (choice == 1) {
 				configureThreshold();
+			} else if (choice == 2) {
+				configureSpendingLimit();
 			} else if (choice == 0) {
 				System.out.println("Returning to main menu...");
 				return;
@@ -28,6 +32,14 @@ public class AccountSettings {
 				System.out.println("Invalid input. Please try again.");
 			}
 		} while(choice != 0);
+	}
+	
+	public void configureSpendingLimit() {
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Current spending limit: $" + this.getSpendingLimit());
+		System.out.print("Enter new spending limit: $");
+		double newSpendingLimit = scanner.nextDouble();
+		setSpendingLimit(newSpendingLimit);
 	}
 	
 	// IF USER CHOOSES THRESHOLD OPTION
@@ -43,9 +55,23 @@ public class AccountSettings {
 		}
 	}
 	
+	public void setSpendingLimit(double amount) {
+		if (amount <= 0) {
+			System.out.println("The spending limit must be a positive number.");
+			return;
+		} else {
+			spendingLimit = amount;
+			System.out.println("Updated spending limit amount: $" + spendingLimit);
+		}
+	}
+	
 	// views current overdraft threshold
 	public double getThreshold() {
 		return threshold;
+	}
+	
+	public double getSpendingLimit() {
+		return spendingLimit;
 	}
 	
 	// for UI; if user chooses to set threshold
