@@ -170,7 +170,7 @@ public abstract class BankService {
 		UserAccount account = userAccounts.get(currentUser);
 		boolean wasWithdrawSuccessful = account.accountWithdrawal(withdrawAmount, currentBankAccountID);
 		if (wasWithdrawSuccessful) {
-			System.out.println("Withdrawal Successful!");
+			return;
 		}
 		else {
 			System.out.println("There was a problem with your withdrawal, please try again later.");

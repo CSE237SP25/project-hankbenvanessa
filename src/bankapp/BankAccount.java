@@ -7,7 +7,8 @@ public class BankAccount {
 	private double balance;
 	private Stack<String> transactionHistory;
 	private int transactionCounter;
-	private AccountSettings settings;
+	public AccountSettings settings;
+	protected double dailyWithdrawnAmount;
 	
 	public BankAccount() {
 		this.balance = 0;
@@ -38,10 +39,15 @@ public class BankAccount {
 		if (amount > this.balance) {
 			System.out.println("You do not have enough money in your account to withdraw " + amount + " dollars.");
 		}
+		if (amount + dailyWithdrawnAmount > settings.getSpendingLimit()) {
+			System.out.println("This withdrawal would put you over your daily spending limit of " + settings.getSpendingLimit() + "$");
+		}
 		else {
 			this.balance -= amount;
+			dailyWithdrawnAmount += amount;
 			transactionHistory.push(transactionCounter + ". Withdrew: $" + amount + ". Account Balance is: $" + this.balance);
 			transactionCounter++;
+			System.out.println("Withdrawal Successful!");
 		}
 	}
 	

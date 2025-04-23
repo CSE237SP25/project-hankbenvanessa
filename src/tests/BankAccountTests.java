@@ -81,4 +81,14 @@ public class BankAccountTests {
         String actual = outContent.toString().trim();
 		assertEquals(expected, actual);
 	}
+	
+	@Test
+	public void testSpendingLimitStopsWithdrawal() {
+		BankAccount account = new BankAccount();
+		account.settings.setSpendingLimit(20);
+		account.deposit(100);
+		account.withdraw(20);
+		account.withdraw(5);
+		assertEquals(account.getCurrentBalance(), 80.0, 0.005);
+	}
 }
