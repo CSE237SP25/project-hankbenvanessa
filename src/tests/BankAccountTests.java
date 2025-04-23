@@ -93,12 +93,28 @@ public class BankAccountTests {
 	}
 	
 	@Test
+	public void testFrozenAccountPreventsDeposit() {
+		BankAccount account = new BankAccount();
+		account.freezeTransactions();
+    account.deposit(50);
+    assertEquals(0.0, account.getCurrentBalance(), 0.005);
+  }
+  
+	public void testFrozenAccountPreventsWithdraw() {
+		BankAccount account = new BankAccount();
+		account.deposit(100);
+		account.unfreezeTransactions();
+    account.withdraw(50);
+    assertEquals(100.0, account.getCurrentBalance(), 0.005);
+  }
+
+	@Test
 	public void testBlockedCardPreventsDeposit() {
 		BankAccount account = new BankAccount();
 		account.reportCardLostOrStolen();
-		account.deposit(50);
-		assertEquals(0.0, account.getCurrentBalance(), 0.005);
-	}
+    account.deposit(50);
+    assertEquals(0.0, account.getCurrentBalance(), 0.005);
+  }
 	
 	@Test
 	public void testBlockedCardPreventsWithdraw() {

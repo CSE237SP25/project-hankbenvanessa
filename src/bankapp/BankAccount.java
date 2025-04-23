@@ -9,6 +9,7 @@ public class BankAccount {
 	private int transactionCounter;
 	public AccountSettings settings;
 	protected double dailyWithdrawnAmount;
+	private boolean transactionsFrozen = false;
 	private boolean isCardReportedLostOrStolen = false;
 	
 	public BankAccount() {
@@ -23,6 +24,19 @@ public class BankAccount {
 			System.out.println("ALERT: Your balance is below the threshold of $" + settings.getThreshold());
 		}
 	}
+	public void freezeTransactions() {
+		transactionsFrozen = true;
+		System.out.println("All transactions have been frozen");
+	}
+	
+	public void unfreezeTransactions() {
+		transactionsFrozen = false;
+		System.out.println("Transactions have been unfrozen");
+	}
+	
+	public boolean areTransactionsFrozen() {
+		return transactionsFrozen;
+	}
 	
 	public void reportCardLostOrStolen() {
 		isCardReportedLostOrStolen = true;
@@ -34,6 +48,10 @@ public class BankAccount {
 	}
 	
 	public void deposit(double amount) {
+		if (areTransactionsFrozen()) {
+			System.out.println("Transaction denied: your account transactions are currently frozen");
+      return;
+    }
 		if (isCardBlocked()) {
 			System.out.println("Transaction blocked: Card has been reported lost/stolen");
 			return;
@@ -47,28 +65,31 @@ public class BankAccount {
 	}
 	
 	public void withdraw(double amount) {
-		if (isCardBlocked()) {
-			System.out.println("Transaction blocked: Card has been reported lost/stolen");
+		if (areTransactionsFrozen()) {
+			System.out.println("Transaction denied: your account transactions are currently frozen");
 			return;
 		}
-			if (amount < 0) {
-				throw new IllegalArgumentException();
-			}
-			if (amount > this.balance) {
-				System.out.println("You do not have enough money in your account to withdraw " + amount + " dollars.");
-			}
-			if (amount + dailyWithdrawnAmount > settings.getSpendingLimit()) {
-				System.out.println("This withdrawal would put you over your daily spending limit of " + settings.getSpendingLimit() + "$");
-			}
-			else {
-				this.balance -= amount;
-				dailyWithdrawnAmount += amount;
-				transactionHistory.push(transactionCounter + ". Withdrew: $" + amount + ". Account Balance is: $" + this.balance);
-				transactionCounter++;
-				System.out.println("Withdrawal Successful!");
-			}
-		
-	}
+    if (isCardBlocked()) {
+      System.out.println("Transaction blocked: Card has been reported lost/stolen");
+			return;
+    }
+		if (amount < 0) {
+			throw new IllegalArgumentException();
+		}
+		if (amount > this.balance) {
+			System.out.println("You do not have enough money in your account to withdraw " + amount + " dollars.");
+		}
+		if (amount + dailyWithdrawnAmount > settings.getSpendingLimit()) {
+			System.out.println("This withdrawal would put you over your daily spending limit of " + settings.getSpendingLimit() + "$");
+		}
+		else {
+			this.balance -= amount;
+			dailyWithdrawnAmount += amount;
+			transactionHistory.push(transactionCounter + ". Withdrew: $" + amount + ". Account Balance is: $" + this.balance);
+			transactionCounter++;
+			System.out.println("Withdrawal Successful!");
+    }
+  }
 	
 	public double getCurrentBalance() {
 		return this.balance;
