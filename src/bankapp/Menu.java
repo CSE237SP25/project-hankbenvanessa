@@ -46,7 +46,8 @@ public class Menu extends BankService {
 		System.out.println("Enter '8' to create a new Bank Account: ");
 		System.out.println("Enter '9' to see your account settings: ");
 		System.out.println("Enter '10' to make a Wire Transfer: ");
-		System.out.println("Enter '11' to give us feedback!");
+    System.out.println("Enter '11' to give us feedback!");
+    System.out.println("Enter '12' to log out");
 	}
 	
 	
@@ -82,9 +83,12 @@ public class Menu extends BankService {
 		if (intFromUser == 10) {
 			processUserTransfer();
 		}
-		if (intFromUser == 11) {
+    if (intFromUser == 11) {
 			processAppFeedback();
 		}
+		if (intFromUser == 12) {
+			processUserLogOut();
+    }
 	}
 	
 	public void processUserCreateAnAccount() {
@@ -251,10 +255,12 @@ public class Menu extends BankService {
 		
 	}
 	
+	public void processUserLogOut() {
+		logOut();
+	}
+  
 	public void processAppFeedback() {
 		System.out.println("You chose option 11: Give app feedback");
 		collectUserFeedback();
 	}
-	
-	
 }

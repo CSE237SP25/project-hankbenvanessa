@@ -336,6 +336,16 @@ public abstract class BankService {
 			}
 		}
 		
+		public void logOut() {
+			if (currentUser.isEmpty()) { // user must be logged in 
+				System.out.println("You are not logged in");
+			} else { // if user is logged in, then they can log out
+				System.out.println("User '" + currentUser + "' has been logged out");
+				currentUser = ""; // sets current user to empty
+				currentBankAccountID = 1; //resets bank account ID
+			}
+		}
+		
 		public double getTransferAmount() {
 			boolean isAmountValid = false;
 			double transferAmount = 0;
