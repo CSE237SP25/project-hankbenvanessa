@@ -39,6 +39,13 @@ public class UserAccount {
 		return myAccounts.size();
 	}
 	
+	public BankAccount getBankAccount(int bankAccountNum) {
+		if (bankAccountNum < 1 || bankAccountNum > myAccounts.size()) {
+			return null;
+		}
+		return myAccounts.get(bankAccountNum-1);
+	}
+	
 	public boolean accountDeposit(double amount, int bankAccountNum) {
 		if (bankAccountNum < 1 || bankAccountNum > myAccounts.size()) {
 			return false;
@@ -64,6 +71,9 @@ public class UserAccount {
 		else {
 			BankAccount account = myAccounts.get(bankAccountNum-1);
 			try {
+				if (amount > account.getCurrentBalance()) {
+					return false;
+				}
 				account.withdraw(amount);
 			}
 			catch (IllegalArgumentException e) {
