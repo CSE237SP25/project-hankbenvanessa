@@ -10,6 +10,7 @@ public class BankAccount {
 	public AccountSettings settings;
 	protected double dailyWithdrawnAmount;
 	private boolean transactionsFrozen = false;
+	private boolean isCardReportedLostOrStolen = false;
 	
 	public BankAccount() {
 		this.balance = 0;
@@ -37,9 +38,22 @@ public class BankAccount {
 		return transactionsFrozen;
 	}
 	
+	public void reportCardLostOrStolen() {
+		isCardReportedLostOrStolen = true;
+		System.out.println("Your card has been reported lost/stolen. All transactions are now blocked");
+	}
+	
+	public boolean isCardBlocked() {
+		return isCardReportedLostOrStolen;
+	}
+	
 	public void deposit(double amount) {
 		if (areTransactionsFrozen()) {
 			System.out.println("Transaction denied: your account transactions are currently frozen");
+      return;
+    }
+		if (isCardBlocked()) {
+			System.out.println("Transaction blocked: Card has been reported lost/stolen");
 			return;
 		}
 		if(amount < 0) {
@@ -55,6 +69,10 @@ public class BankAccount {
 			System.out.println("Transaction denied: your account transactions are currently frozen");
 			return;
 		}
+    if (isCardBlocked()) {
+      System.out.println("Transaction blocked: Card has been reported lost/stolen");
+			return;
+    }
 		if (amount < 0) {
 			throw new IllegalArgumentException();
 		}
@@ -70,8 +88,8 @@ public class BankAccount {
 			transactionHistory.push(transactionCounter + ". Withdrew: $" + amount + ". Account Balance is: $" + this.balance);
 			transactionCounter++;
 			System.out.println("Withdrawal Successful!");
-		}
-	}
+    }
+  }
 	
 	public double getCurrentBalance() {
 		return this.balance;

@@ -46,6 +46,9 @@ public class Menu extends BankService {
 		System.out.println("Enter '8' to create a new Bank Account: ");
 		System.out.println("Enter '9' to see your account settings: ");
 		System.out.println("Enter '10' to make a Wire Transfer: ");
+    System.out.println("Enter '11' to give us feedback!");
+    System.out.println("Enter '12' to log out");
+    System.out.println("Enter '13' to report your card as lost/stolen: ");
 		System.out.println("Enter '14' to freeze all transactions: ");
 		
 		if (userAccounts.containsKey(currentUser)) {
@@ -56,7 +59,6 @@ public class Menu extends BankService {
 					System.out.println("Enter '15' to unfreeze all transactions: ");
 				}
 			} catch (Exception e) {
-				
 			}
 		} 	
 	}
@@ -92,13 +94,21 @@ public class Menu extends BankService {
 		if (intFromUser == 10) {
 			processUserTransfer();
 		}
-		if (intFromUser == 14) {
+    if (intFromUser == 11) {
+			processAppFeedback();
+		}
+		if (intFromUser == 12) {
+			processUserLogOut();
+    }
+    if (intFromUser == 13) {
+			processAccountLock();
+    }
+    if (intFromUser == 14) {
 			processAccountFreeze();
 		}
 		if (intFromUser == 15) {
 			processAccountUnfreeze();
-		}
-
+    }
 	}
 	
 	public void processUserCreateAnAccount() {
@@ -148,7 +158,7 @@ public class Menu extends BankService {
 		startPasswordRecovery();
 	}
 	
-	public void processUserDeposit() {
+	public void processUserDeposit() {		
 		System.out.println("You chose option 3: make a deposit");
 		if (!userAccounts.containsKey(currentUser)) {
 			System.out.println("Please log in to an account before making a deposit");
@@ -157,8 +167,7 @@ public class Menu extends BankService {
 			System.out.println("Please enter the amount you would like to deposit: ");
 			double depositAmount = getUserInputDouble();
 			makeDeposit(depositAmount);
-		}
-		
+		}		
 	}
 	
 	public void processUserWithdrawal() {
@@ -243,6 +252,7 @@ public class Menu extends BankService {
 		}
 	}
 	
+	
 	public boolean wireTransfer(String transferAccountUsername, double transferAmount) {
 		if (userAccounts.containsKey(transferAccountUsername)) {
 			if (transferAmount < 0 || transferAmount > getCurrentBalance()) {
@@ -273,7 +283,6 @@ public class Menu extends BankService {
 		}
 	}
 	
-	
 	public void processAccountUnfreeze() {
 		if (!userAccounts.containsKey(currentUser)) {
 			System.out.println("Please log in to an account before unfreezing your account");
@@ -282,5 +291,22 @@ public class Menu extends BankService {
 			account.getBankAccount(currentBankAccountID).unfreezeTransactions();
 		}
 	}
-	
+
+	public void processUserLogOut() {
+		logOut();
+	}
+  
+	public void processAppFeedback() {
+		System.out.println("You chose option 11: Give app feedback");
+		collectUserFeedback();
+	}
+  
+  	public void processAccountLock() {
+		if (!userAccounts.containsKey(currentUser)) {
+			System.out.println("Please log in to an account before reporting stolen/lost card");
+		} else {
+			UserAccount account = userAccounts.get(currentUser);
+			account.getBankAccount(currentBankAccountID).reportCardLostOrStolen();
+    }
+    }  
 }
