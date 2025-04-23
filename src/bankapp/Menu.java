@@ -46,7 +46,9 @@ public class Menu extends BankService {
 		System.out.println("Enter '8' to create a new Bank Account: ");
 		System.out.println("Enter '9' to see your account settings: ");
 		System.out.println("Enter '10' to make a Wire Transfer: ");
-		System.out.println("Enter '13' to report your card as lost/stolen: ");
+    System.out.println("Enter '11' to give us feedback!");
+    System.out.println("Enter '12' to log out");
+    System.out.println("Enter '13' to report your card as lost/stolen: ");
 	}
 	
 	
@@ -82,9 +84,16 @@ public class Menu extends BankService {
 		if (intFromUser == 10) {
 			processUserTransfer();
 		}
-		if (intFromUser == 13) {
+    if (intFromUser == 11) {
+			processAppFeedback();
+		}
+		if (intFromUser == 12) {
+			processUserLogOut();
+    }
+    if (intFromUser == 13) {
 			processAccountLock();
 		}
+
 	}
 	
 	public void processUserCreateAnAccount() {
@@ -228,6 +237,7 @@ public class Menu extends BankService {
 		}
 	}
 	
+	
 	public boolean wireTransfer(String transferAccountUsername, double transferAmount) {
 		if (userAccounts.containsKey(transferAccountUsername)) {
 			if (transferAmount < 0 || transferAmount > getCurrentBalance()) {
@@ -249,14 +259,21 @@ public class Menu extends BankService {
 		
 	}
 	
-	public void processAccountLock() {
+	public void processUserLogOut() {
+		logOut();
+	}
+  
+	public void processAppFeedback() {
+		System.out.println("You chose option 11: Give app feedback");
+		collectUserFeedback();
+	}
+  
+  	public void processAccountLock() {
 		if (!userAccounts.containsKey(currentUser)) {
 			System.out.println("Please log in to an account before reporting stolen/lost card");
 		} else {
 			UserAccount account = userAccounts.get(currentUser);
 			account.getBankAccount(currentBankAccountID).reportCardLostOrStolen();
-		}
-		
-	}
-	
+		}	
+	}  
 }

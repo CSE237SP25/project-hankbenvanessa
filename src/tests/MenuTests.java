@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.jupiter.api.Test;
 
 import bankapp.BankAccount;
+import bankapp.BankService;
 import bankapp.Menu;
 
 public class MenuTests {
@@ -71,5 +72,16 @@ public class MenuTests {
 		
 		assertEquals(50.0, currentBalanceUser1, 0.001);
 		assertEquals(0, currentBalanceUser2, 0.001);
+	}
+	
+
+	@Test
+	public void testProcessUserLogout() {
+		Menu m = new Menu();
+		m.createUserAccount("testUser", "testPass");
+		m.userLogIn("testUser", "testPass");
+		assertEquals("User should be logged in before logout", "testUser", m.getCurrentUser());
+		m.processUserLogOut();
+		assertEquals("User should be logged out after logout", "", m.getCurrentUser());
 	}
 }
